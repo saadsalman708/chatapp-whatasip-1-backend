@@ -1,6 +1,6 @@
-const mongooes = require("mongoose");
+const mongoose = require("mongoose");
 
-const userSchema = new mongooes.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         require: true,
@@ -19,7 +19,15 @@ const userSchema = new mongooes.Schema({
         type: String,
         required: true,
         min: 8,
+    },
+    isOnline: {
+        type: Boolean,
+        default: false,
+    },
+    lastSeen: {
+        type: Date,
+        default: Date.now,
     }
 }, {timestamps: true});
 
-module.exports = mongooes.model("Users" , userSchema);
+module.exports = mongoose.model("User" , userSchema);

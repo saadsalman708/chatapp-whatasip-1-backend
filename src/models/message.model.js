@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 
 const msgSchema = new mongoose.Schema({
-    roomId: {
+    chatRoomId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Rooms",
+        ref: "ChatRoom",
         required: true,
     },
     sender: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     text: {
@@ -24,7 +25,8 @@ const msgSchema = new mongoose.Schema({
     //     default: "",
     // },
     readBy: [{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     }],
     isRead: {
         type: Boolean,
@@ -32,8 +34,6 @@ const msgSchema = new mongoose.Schema({
     },
 }, {timestamps: true});
 
-msgSchema.index({ roomId: 1, createdAt: -1 });
+msgSchema.index({ chatRoomId: 1, createdAt: -1 });
 
-module.exports = mongoose.Schema.Types.ObjectId;
-
-module.exports = mongoose.model("Messages" , msgSchema);
+module.exports = mongoose.model("Message" , msgSchema);

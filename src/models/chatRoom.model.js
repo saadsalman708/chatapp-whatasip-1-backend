@@ -1,29 +1,38 @@
 const mongoose = require("mongoose");
 
-const chatRoomSchema = new mongoose.Schema({
+const chatRoomSchema = new mongoose.Schema(
+  {
     type: {
-        type: String,
-        enum: ["private", "group"],
-        required: true
+      type: String,
+      enum: ["private", "group"],
+      required: true,
     },
     name: {
-        type: String,
-        trim: true,
-        default: ""
+      type: String,
+      trim: true,
+      default: "",
     },
-    participants: [{
-        type: String,
-        required: true
-    }],
-    admins: [{
-        type: String
-    }],
-    lastMessage: {
+    participants: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Messages"
-    }
-}, { timestamps: true });
+        ref: "User",
+        required: true,
+      },
+    ],
+    admins: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    lastMessage: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+    },
+  },
+  { timestamps: true },
+);
 
 chatRoomSchema.index({ participants: 1 });
 
-module.exports = mongoose.model("chatRooms", chatRoomSchema);
+module.exports = mongoose.model("ChatRoom", chatRoomSchema);
