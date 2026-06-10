@@ -22,6 +22,8 @@ const registerUser = async (data) => {
 
   const token = generateToken(newUser._id , email);
 
+  newUser.password = undefined;
+
   return {
     user: newUser,
     token

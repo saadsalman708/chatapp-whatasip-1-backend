@@ -1,5 +1,7 @@
 const registerUser = require("../services/auth/register.service");
 const loginUser = require("../services/auth/login.service");
+const forgotPassword = require("../services/auth/forgot.service");
+const resetPassword = require("../services/auth/reset.service");
 const catchAsync = require("../utils/catchAsync");
 const { nodeEnv } = require("../config/index");
 
@@ -37,7 +39,43 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+const forgot = catchAsync(async (req , res) => {
+  const result = await forgotPassword(req.body.email);
+  res.status(200).json({
+    success: true,
+    message: result.message,
+  });
+});
+
+const reset = catchAsync(async (req , res) => {
+  const {token} = req.params;
+  const {password} = req.body;
+  const result = await resetPassword(token , password);
+  res.status(200).json({
+    success: true,
+    message: result.message,
+  })
+});
+
+const signOut = (req , res) => {
+  res.clearCookie("token" , {
+    httpOnly: true,
+    secure: nodeEnv === "production",
+    sameSite: "strict",
+    // sameSite: "none",
+    expires: new Date(0),
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully!",
+  });
+};
+
 module.exports = {
   signup,
   login,
+  forgot,
+  reset,
+  signOut,
 };

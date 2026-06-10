@@ -14,6 +14,9 @@ const loginUser = async (data)=> {
     if (!isMatch) throw createError("Invalid Email or Password!" , 401);
     
     const token = generateToken(user._id , email);
+
+    user.password = undefined;
+
     return {user , token};
 };
 
