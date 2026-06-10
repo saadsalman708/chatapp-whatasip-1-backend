@@ -48,17 +48,17 @@ const forgot = catchAsync(async (req, res) => {
 });
 
 const reset = catchAsync(async (req, res) => {
-  const { token } = req.params;
+  const { urlToken } = req.params;
   const { password } = req.body;
-  const { user , token } = await resetPassword(token, password);
+  const { user , newToken } = await resetPassword(urlToken, password);
 
-  setCookie(res , token);
+  setCookie(res , newToken);
 
   res.status(200).json({
     success: true,
     message: "Password reset successfully! You are now logged in",
     user,
-    token,
+    token: newToken,
   });
 });
 
