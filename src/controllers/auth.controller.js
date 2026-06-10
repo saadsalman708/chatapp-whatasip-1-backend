@@ -3,7 +3,7 @@ const loginUser = require("../services/auth/login.service");
 const catchAsync = require("../utils/catchAsync");
 const {nodeEnv} = require("../config/index")
 
-const register = catchAsync( async (req , res) => {
+const signup = catchAsync( async (req , res) => {
     const user = await registerUser(req.body);
     res.status(201).json({
         message: "User Created successfully!",
@@ -19,10 +19,15 @@ const login = catchAsync( async (req , res) => {
     sameSite: "strict",
     // sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000,
-    })
+    });
+
+    res.status(200).json({
+        message: "Logged in successfull!",
+        user,
+    });
 });
 
 module.exports = {
-    register,
+    signup,
     login,
 };

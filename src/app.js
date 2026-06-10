@@ -1,8 +1,9 @@
 const express = require("express");
-const helmet = require("helmet")
+const helmet = require("helmet");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const {frontendUrl , frontendPort , nodeEnv} = require("../src/config/index");
+const {frontendUrl , frontendPort , nodeEnv, backendPort} = require("../src/config/index");
+const authRouter = require("./routes/auth.routes");
 
 const app = express();
 
@@ -11,24 +12,27 @@ app.use(helmet());
 const allowedOrigins = [
     `${frontendUrl}`,
     `http://localhost:${frontendPort}`,
+    `http://localhost:${backendPort}`
 ];
 
 app.use(cors({
     origin: (origin , callback)=>{
         if (!origin) return callback(null , true);
         if (allowedOrigins.includes(origin)) {
-            callback(null , true);
+            return callback(null , true);
         } else {
-            callback(new Error("Not allowed by CORS Policy"));
+            return callback(new Error("Not allowed by CORS Policy"));
         }
     },
-    methods: ["GET" , "POST" , "PUT" , "DELETE" , "PATCH"],
+    // methods: ["GET" , "POST" , "PUT" , "DELETE" , "PATCH"],
     credentials: true,
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use("/api/v1/auth" , authRouter);
 
 app.use(( err , req , res , next )=> {
     const statusCode = err.statusCode || 500;
@@ -37,7 +41,7 @@ app.use(( err , req , res , next )=> {
     res.status(statusCode).json({
         success: false,
         message: msg,
-        stack: nodeEnv === "production" ? null: err.stack
+        // stack: nodeEnv === "production" ? null: err.stack
     });
 });
 

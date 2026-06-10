@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const bcryptjs = require("bcryptjs");
 
 const registerUser = async (data) => {
   const { name, username, email, password } = data;

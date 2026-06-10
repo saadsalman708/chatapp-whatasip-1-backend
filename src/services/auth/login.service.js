@@ -11,6 +11,7 @@ const loginUser = async (data)=> {
         err.statusCode = 404;
         throw err;
     }
+    console.log(user)
     const isMatch = await bcryptjs.compare(password , user.password);
     if (!isMatch) {
         const err = new Error("Invalid Email or Password!");
@@ -19,7 +20,7 @@ const loginUser = async (data)=> {
     }
     const token = jwt.sign(
         {
-            id: teacher._id,
+            id: user._id,
             email: email,
         },
         jwtSecret,

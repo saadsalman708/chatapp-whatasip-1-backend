@@ -1,7 +1,7 @@
+require("dotenv").config();
 const app = require("./src/app.js");
 const { backendPort } = require("./src/config/index.js");
 const connectDB = require("./src/lib/db.js");
-require("dotenv").config();
 
 const startServer = async () => {
   try {
