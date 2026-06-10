@@ -1,14 +1,14 @@
 const User = require("../../models/user.model");
 const bcryptjs = require("bcryptjs");
+const createError = require("../../utils/createError");
+const generateToken = require("../../utils/generateToken");
 
 const registerUser = async (data) => {
   const { name, username, email, password } = data;
+  if (!name || !username || !email || !password) throw createError("All fields are required!", 400);
+
   const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    const err = new Error("Email already exists!");
-    err.statusCode = 400;
-    throw err;
-  }
+  if (existingUser) throw createError("Email already exists!" , 400);
 
   const salt = await bcryptjs.genSalt(10);
   const hashedPass = await bcryptjs.hash(password, salt);
@@ -19,7 +19,13 @@ const registerUser = async (data) => {
     email: email,
     password: hashedPass,
   });
-  return newUser;
+
+  const token = generateToken(newUser._id , email);
+
+  return {
+    user: newUser,
+    token
+  };
 };
 
 module.exports = registerUser;
