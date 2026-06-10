@@ -1,7 +1,7 @@
-const Messages = require("../models/message.model");
+const Message = require("../models/message.model");
 
 const markMsgsAsDelivered = async (chatRoomId, userId) => {
-  return await Messages.updateMany(
+  return await Message.updateMany(
     {
       chatRoomId: { $in: chatRoomId },
       sender: { $ne: userId },
@@ -14,7 +14,7 @@ const markMsgsAsDelivered = async (chatRoomId, userId) => {
 };
 
 const markMsgsAsRead = async (chatRoomId, userId) => {
-  return await Messages.updateMany(
+  return await Message.updateMany(
     {
       chatRoomId: chatRoomId,
       sender: { $ne: userId },

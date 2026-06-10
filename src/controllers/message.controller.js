@@ -1,5 +1,5 @@
 const { createConnection } = require("mongoose");
-const Messages = require("../models/message.model");
+const Message = require("../models/message.model");
 const {
   markMsgsAsDelivered,
   markMsgsAsRead,
