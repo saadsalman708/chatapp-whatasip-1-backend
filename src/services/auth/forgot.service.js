@@ -9,16 +9,16 @@ const forgotPassword = async (email) => {
   const user = await User.findOne({ email });
   if (!user)
     throw createError("No account found with that email address.", 404);
-  
+
   const rawResetToken = crypto.randomBytes(32).toString("hex");
-  
+
   user.passwordResetToken = crypto
-  .createHash("sha256")
-  .update(rawResetToken)
-  .digest("hex");
-  
+    .createHash("sha256")
+    .update(rawResetToken)
+    .digest("hex");
+
   user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  
+
   await user.save({ validateBeforeSave: true });
 
   const resetUrl = `${frontendUrl}:${frontendPort}/reset-password/${rawResetToken}`;

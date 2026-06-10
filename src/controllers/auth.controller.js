@@ -5,7 +5,7 @@ const resetPassword = require("../services/auth/reset.service");
 const catchAsync = require("../utils/catchAsync");
 const { nodeEnv } = require("../config/index");
 
-const setCookie = (res , token) => {
+const setCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
     secure: nodeEnv === "production",
@@ -16,9 +16,9 @@ const setCookie = (res , token) => {
 };
 
 const signup = catchAsync(async (req, res) => {
-  const {user , token} = await registerUser(req.body);
-  
-  setCookie(res , token);
+  const { user, token } = await registerUser(req.body);
+
+  setCookie(res, token);
 
   res.status(201).json({
     message: "User Created successfully!",
@@ -30,7 +30,7 @@ const signup = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { user, token } = await loginUser(req.body);
 
-  setCookie(res , token);
+  setCookie(res, token);
 
   res.status(200).json({
     message: "Logged in successfull!",
@@ -39,7 +39,7 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
-const forgot = catchAsync(async (req , res) => {
+const forgot = catchAsync(async (req, res) => {
   const result = await forgotPassword(req.body.email);
   res.status(200).json({
     success: true,
@@ -47,18 +47,23 @@ const forgot = catchAsync(async (req , res) => {
   });
 });
 
-const reset = catchAsync(async (req , res) => {
-  const {token} = req.params;
-  const {password} = req.body;
-  const result = await resetPassword(token , password);
+const reset = catchAsync(async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  const { user , token } = await resetPassword(token, password);
+
+  setCookie(res , token);
+
   res.status(200).json({
     success: true,
-    message: result.message,
-  })
+    message: "Password reset successfully! You are now logged in",
+    user,
+    token,
+  });
 });
 
-const signOut = (req , res) => {
-  res.clearCookie("token" , {
+const signOut = (req, res) => {
+  res.clearCookie("token", {
     httpOnly: true,
     secure: nodeEnv === "production",
     sameSite: "strict",
