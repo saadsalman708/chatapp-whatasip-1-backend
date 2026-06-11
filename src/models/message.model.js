@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
 
-const msgSchema = new mongoose.Schema({
+const msgSchema = new mongoose.Schema(
+  {
     chatRoomId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ChatRoom",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChatRoom",
+      required: true,
     },
     sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     text: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     // msgType: {
     //     type: String,
@@ -24,16 +25,26 @@ const msgSchema = new mongoose.Schema({
     //     type: String,
     //     default: "",
     // },
-    readBy: [{
+    readBy: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    }],
+      },
+    ],
     isRead: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
-}, {timestamps: true});
+    deliveredTo: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  { timestamps: true },
+);
 
 msgSchema.index({ chatRoomId: 1, createdAt: -1 });
 
-module.exports = mongoose.model("Message" , msgSchema);
+module.exports = mongoose.model("Message", msgSchema);

@@ -1,8 +1,11 @@
 const express = require("express");
-const routes = express.Router()
+const messageController = require("../controllers/message.controller");
+const protect = require("../middleware/protect.middleware");
 
+const messageRouter = express.Router();
 
+messageRouter.use(protect);
 
-routes("/:chatRoomId" , );
+messageRouter.get("/:chatRoomId", messageController.loadChatMessages);
 
-module.exports = routes;
+module.exports = messageRouter;

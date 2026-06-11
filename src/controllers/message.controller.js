@@ -1,27 +1,20 @@
-const { createConnection } = require("mongoose");
-const Message = require("../models/message.model");
-const {
-  markMsgsAsDelivered,
-  markMsgsAsRead,
-  getMsgsHistory,
-} = require("../services/message.service");
+const getHistory = require("../services/message/getHistory.service");
+const markRead = require("../services/message/markRead.service");
+const catchAsync = require("../utils/catchAsync");
 
-const getMessages = async (req, res) => {
-  try {
-    const { chatRoomId } = req.params;
-    const userId = req.query.userId;
+const loadChatMessages = catchAsync(async (req, res) => {
+  const { chatRoomId } = req.params;
+  const currentUserId = req.user._id;
 
-    const allMsgs = getMsgsHistory(chatRoomId);
+  await markRead(chatRoomId, currentUserId);
 
-    res.status(200).json({
-      message: "ok",
-      allMsgs,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: `Failed to load messages. Error: ${error.message}`,
-    });
-  }
-};
+  const messages = await getHistory(chatRoomId);
 
-module.exports = {getMessages  };
+  res.status(200).json({
+    success: true,
+    count: messages.length,
+    data: messages,
+  });
+});
+
+module.exports = loadChatMessages;
