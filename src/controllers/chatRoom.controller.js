@@ -1,6 +1,6 @@
-const getPrivateChat = require("../services/chatRoom/getPrivateChat");
-const getMyChats = require("../services/chatRoom/getMyChats");
-const createGroup = require("../services/chatRoom/createGroup");
+const getPrivateChat = require("../services/chatRoom/getPrivateChat.service");
+const getMyChats = require("../services/chatRoom/getMyChat.service");
+const createGroup = require("../services/chatRoom/createGroup.service");
 const catchAsync = require("../utils/catchAsync");
 
 const openPrivate = catchAsync(async (req, res) => {

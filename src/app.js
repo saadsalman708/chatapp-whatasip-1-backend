@@ -6,6 +6,7 @@ const {frontendUrl , frontendPort , nodeEnv, backendPort} = require("../src/conf
 const authRouter = require("./routes/auth.routes");
 const chatRoomRouter = require("./routes/chatRoom.routes");
 const messageRouter = require("./routes/message.routes");
+const userRouter = require("./routes/user.routes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/rooms", chatRoomRouter);
 app.use("/api/v1/messages", messageRouter);
+app.use("/api/v1/users", userRouter);
 
 app.use(( err , req , res , next )=> {
     const statusCode = err.statusCode || 500;
