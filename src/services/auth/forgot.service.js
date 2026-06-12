@@ -21,8 +21,7 @@ const forgotPassword = async (email) => {
 
   await user.save({ validateBeforeSave: true });
 
-  const resetUrl = `${frontendUrl}:${frontendPort}/reset-password/${rawResetToken}`;
-  //   const resetUrl = `${frontendUrl}/reset-password/${rawResetToken}`;
+  const resetUrl = `${frontendUrl}/reset-password/${rawResetToken}`;
 
   try {
     await sendResetEmail(user.email, resetUrl);

@@ -2,10 +2,8 @@ const express = require("express");
 const findFriends = require("../controllers/user.controller");
 const protect = require("../middleware/protect.middleware");
 
-const messageRouter = express.Router();
+const userRouter = express.Router();
 
-messageRouter.use(protect);
+userRouter.get("/search", protect, findFriends);
 
-messageRouter.get("/:chatRoomId", findFriends);
-
-module.exports = messageRouter;
+module.exports = userRouter;

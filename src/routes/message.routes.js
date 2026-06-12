@@ -4,8 +4,6 @@ const protect = require("../middleware/protect.middleware");
 
 const messageRouter = express.Router();
 
-messageRouter.use(protect);
-
-messageRouter.get("/:chatRoomId", loadChatMessages);
+messageRouter.get("/:chatRoomId", protect, loadChatMessages);
 
 module.exports = messageRouter;

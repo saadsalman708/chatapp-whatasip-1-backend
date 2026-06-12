@@ -10,7 +10,7 @@ const sendMessage = (io, socket) => async ({ chatRoomId, senderId, text }) => {
   const room = await ChatRoom.findById(chatRoomId);
   if (!room) return;
 
-  room.members.forEach((memberId) => {
+  room.participants.forEach((memberId) => {
     if (memberId.toString() === senderId.toString()) return;
 
     io.to(memberId.toString()).emit("background_notification", {

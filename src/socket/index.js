@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const User = require("../models/user.model");
 const socketAuth = require("../middleware/auth.socket.middleware");
+const {frontendUrl} = require("../config/index")
 
 const joinRoom = require("./events/joinRoom.socket");
 const sendMessage = require("./events/sendMessage.socket");
@@ -10,7 +11,7 @@ const { typing, stopTyping } = require("./events/typing.socket");
 const initSockets = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
-      origin: process.env.FRONTEND_URL,
+      origin: frontendUrl,
       credentials: true,
     },
   });

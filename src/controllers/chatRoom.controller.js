@@ -4,7 +4,8 @@ const createGroup = require("../services/chatRoom/createGroup.service");
 const catchAsync = require("../utils/catchAsync");
 
 const openPrivate = catchAsync(async (req, res) => {
-  const chat = await getPrivateChat(req.user._id, req.body.userId);
+  console.log(req.user._id , req.body.targetUserId)
+  const chat = await getPrivateChat(req.user._id, req.body.targetUserId);
   res.status(200).json({ success: true, data: chat });
 });
 

@@ -8,14 +8,16 @@ const initSockets = require("./src/socket/index.js");
 const startServer = async () => {
   try {
     await connectDB();
-    
+
     const server = http.createServer(app);
 
     initSockets(server);
-
-    app.listen(backendPort, () => {
-      console.log(`Server is running on ${backendPort}!`);
+    
+    // app.listen(backendPort, () => {
+    server.listen(backendPort, () => {
+      console.log(`Server & Sockets are running on ${backendPort}!`);
     });
+
   } catch (error) {
     console.error(error.message);
     process.exit(1);
