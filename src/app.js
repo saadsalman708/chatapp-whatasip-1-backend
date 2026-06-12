@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth.routes");
 const chatRoomRouter = require("./routes/chatRoom.routes");
 const messageRouter = require("./routes/message.routes");
 const userRouter = require("./routes/user.routes");
+const googleAuthRouter = require("./routes/googleAuth.route");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/auth", googleAuthRouter);
 app.use("/api/v1/rooms", chatRoomRouter);
 app.use("/api/v1/messages", messageRouter);
 app.use("/api/v1/users", userRouter);

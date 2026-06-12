@@ -1,3 +1,4 @@
+require("node:dns/promises").setServers(["8.8.8.8", "1.1.1.1"]);
 require("dotenv").config();
 const app = require("./src/app.js");
 const { backendPort } = require("./src/config/index.js");
@@ -11,7 +12,7 @@ const startServer = async () => {
 
     const server = http.createServer(app);
 
-    initSockets(server);
+    initSockets(server, app);
     
     // app.listen(backendPort, () => {
     server.listen(backendPort, () => {

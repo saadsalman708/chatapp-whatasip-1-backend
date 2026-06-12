@@ -8,7 +8,7 @@ const sendMessage = require("./events/sendMessage.socket");
 const disconnect = require("./events/disconnect.socket");
 const { typing, stopTyping } = require("./events/typing.socket");
 
-const initSockets = (httpServer) => {
+const initSockets = (httpServer, app) => {
   const io = new Server(httpServer, {
     cors: {
       origin: frontendUrl,
@@ -17,6 +17,8 @@ const initSockets = (httpServer) => {
   });
 
   io.use(socketAuth);
+
+  app.set("io", io);
 
 io.on("connection", async (socket) => {
     const currentUserId = socket.data.userId;

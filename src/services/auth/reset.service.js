@@ -15,7 +15,7 @@ const resetPassword = async (rawToken, newPassword) => {
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
-  });
+  }).select("+password");
   
   if (!user) throw createError("Token is invalid or has expired.", 400);
   
